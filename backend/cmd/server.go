@@ -5,24 +5,24 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/CloudNativeCZ/public-cloud-kubernetes-demo/pkg"
+	"github.com/cloudnativecz/public-cloud-kubernetes-demo/backend/api"
+	"github.com/cloudnativecz/public-cloud-kubernetes-demo/backend/pkg"
 	"github.com/go-redis/redis"
-	"github.com/CloudNativeCZ/public-cloud-kubernetes-demo/api"
-	"net/http"
 	"log"
+	"net/http"
 )
 
 type AppOptions struct {
 	backingStoreOptions *redis.Options
-	listenHost int
-	listenPort int
-	backingStoreHost string
-	backingStorePort int
+	listenHost          int
+	listenPort          int
+	backingStoreHost    string
+	backingStorePort    int
 }
 
 type App struct {
 	backingStore *redis.Client
-	options *AppOptions
+	options      *AppOptions
 }
 
 func newApp() *App {
