@@ -11,6 +11,7 @@ import {
 } from '@angular/material'
 
 import { FlexLayoutModule } from '@angular/flex-layout'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout'
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule, ReactiveFormsModule,
 
     MatToolbarModule, MatCardModule, MatAutocompleteModule,
     MatBadgeModule, MatButtonModule, MatIconModule, MatInputModule,

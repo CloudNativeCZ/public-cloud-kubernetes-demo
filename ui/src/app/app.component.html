@@ -6,4 +6,15 @@
   <mat-card *ngFor="let q of questions | async">
     {{ q | json }}
   </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <form>
+        <mat-form-field fxFlex>
+          <input [formControl]="question" matInput placeholder="Ask your question :)">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="submitQuestion()">Submit</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
