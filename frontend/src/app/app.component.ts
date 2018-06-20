@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
 import { FormControl } from '@angular/forms';
 
 export interface Question {
-
+  Body: string
 }
 
 @Component({
@@ -21,7 +21,7 @@ export class AppComponent {
   question = new FormControl()
 
   constructor(private http: HttpClient) {
-    this.questions$ = timer(0, 2000).pipe(
+    this.questions$ = <any>timer(0, 2000).pipe(
       switchMap(() => http.get(environment.apiURL)),
     )
   }
