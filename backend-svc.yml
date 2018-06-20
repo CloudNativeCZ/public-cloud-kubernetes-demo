@@ -7,7 +7,8 @@ metadata:
     role: master
     tier: backend
 spec:
-  type: NodePort 
+  type: LoadBalancer
+  loadBalancerIP: 137.117.242.53
   ports:
   - port: 8080
     targetPort: 8080
