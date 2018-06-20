@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiURL: 'https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_ten'
+  apiURL: 'http://137.117.242.53:8080/questions'
 };
 
 /*
