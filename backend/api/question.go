@@ -1,9 +1,9 @@
 package api
 
 import (
-	"net/http"
-	"github.com/go-redis/redis"
 	"github.com/emicklei/go-restful"
+	"github.com/go-redis/redis"
+	"net/http"
 )
 
 type Questions struct {
@@ -22,7 +22,7 @@ func NewQuestionsResource(client *redis.Client) *QuestionsResource {
 	return &QuestionsResource{backingStore: client}
 }
 
-func (resource QuestionsResource) Register() {
+func (resource QuestionsResource) Register(container *restful.Container) {
 	ws := new(restful.WebService)
 
 	ws.Path("/questions")
@@ -31,7 +31,8 @@ func (resource QuestionsResource) Register() {
 
 	ws.Route(ws.GET("").To(resource.getAll))
 	ws.Route(ws.PUT("").To(resource.add))
-	restful.Add(ws)
+
+	container.Add(ws)
 }
 
 func (resource QuestionsResource) getAll(req *restful.Request, resp *restful.Response) {

@@ -12,6 +12,8 @@ import (
 	"github.com/cloudnativecz/public-cloud-kubernetes-demo/backend/api"
 	"github.com/cloudnativecz/public-cloud-kubernetes-demo/backend/pkg"
 	"github.com/go-redis/redis"
+
+	"github.com/emicklei/go-restful"
 )
 
 type AppOptions struct {
@@ -64,8 +66,11 @@ func (app *App) initiateBackingStore() {
 	app.backingStore = backingStore
 }
 
-func (app *App) serve() {
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", app.options.listenHost, app.options.listenPort), nil))
+func (app *App) serve(container *restful.Container) {
+	addr := fmt.Sprintf("%s:%d", app.options.listenHost, app.options.listenPort)
+	server := &http.Server{Addr: addr, Handler: container}
+
+	log.Fatal(server.ListenAndServe())
 }
 
 func main() {
@@ -75,9 +80,22 @@ func main() {
 	app.parseEnvVars()
 
 	app.initiateBackingStore()
+	wsContainer := restful.NewContainer()
+
+	// Add container filter to enable CORS
+	cors := restful.CrossOriginResourceSharing{
+		ExposeHeaders:  []string{"X-My-Header"},
+		AllowedHeaders: []string{"Content-Type", "Accept"},
+		AllowedMethods: []string{"GET", "POST"},
+		CookiesAllowed: false,
+		Container:      wsContainer}
+	wsContainer.Filter(cors.Filter)
+
+	// Add container filter to respond to OPTIONS
+	wsContainer.Filter(wsContainer.OPTIONSFilter)
 
 	questionsResource := api.NewQuestionsResource(app.backingStore)
-	questionsResource.Register()
+	questionsResource.Register(wsContainer)
 
-	app.serve()
+	app.serve(wsContainer)
 }
