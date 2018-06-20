@@ -21,7 +21,7 @@ export class AppComponent {
   question = new FormControl()
 
   constructor(private http: HttpClient) {
-    this.questions$ = <any>timer(0, 2000).pipe(
+    this.questions$ = <any>timer(0, 1000).pipe(
       switchMap(() => http.get(environment.apiURL).pipe(map(res => (<any>res).Content))),
     )
     console.log(environment.apiURL)
@@ -29,9 +29,15 @@ export class AppComponent {
   }
 
   submitQuestion() {
+    if(this.question.value.length <= 0) {
+      return
+    }
+
     this.http.put(environment.apiURL, {
       body: this.question.value
     }).subscribe()
+
+    this.question.setValue('')
   }
 
   get questions(): Observable<Question> {
