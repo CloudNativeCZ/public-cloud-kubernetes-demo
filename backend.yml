@@ -22,10 +22,6 @@ spec:
         - name: master
           image: pkotas/kubernetes-demo-backend:latest  # or just image: redis
           imagePullPolicy: IfNotPresent
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
           ports:
             - containerPort: 8080
           env:
