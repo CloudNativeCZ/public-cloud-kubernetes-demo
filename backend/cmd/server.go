@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"strconv"
-	"log"
-	"net/http"
+
+	log "github.com/golang/glog"
 
 	"github.com/cloudnativecz/public-cloud-kubernetes-demo/backend/api"
 	"github.com/cloudnativecz/public-cloud-kubernetes-demo/backend/pkg"
@@ -15,7 +16,7 @@ import (
 
 type AppOptions struct {
 	backingStoreOptions *redis.Options
-	listenHost          int
+	listenHost          string
 	listenPort          int
 }
 
@@ -33,40 +34,38 @@ func newApp() *App {
 }
 
 func (app *App) addFlags() {
-        flag.IntVar(&app.options.listenHost, "listenHost", 0, "Host address to listen on")
-        flag.IntVar(&app.options.listenPort, "listenPort", 8080, "Host port to listen on")
+	flag.StringVar(&app.options.listenHost, "listenHost", "0.0.0.0", "Host address to listen on")
+	flag.IntVar(&app.options.listenPort, "listenPort", 8080, "Host port to listen on")
 }
 
 func (app *App) parseFlags() {
-        flag.Parse()
+	flag.Parse()
 }
 
 func (app *App) parseEnvVars() {
-        password := os.Getenv("BACKING_STORE_PASSWORD")
-        host := os.Getenv("BACKING_STORE_HOST")
-        port := os.Getenv("BACKING_STORE_PORT")
-        user := os.Getenv("BACKING_STORE_DB")
-        db, err := strconv.Atoi(user)
-        if err != nil {
-                panic("Wrong DB name")
-        }
+	host := os.Getenv("BACKING_STORE_HOST")
+	port := os.Getenv("BACKING_STORE_PORT")
+	user := os.Getenv("BACKING_STORE_DB")
+	db, err := strconv.Atoi(user)
+	if err != nil {
+		panic("Wrong DB name")
+	}
 
-        app.options.backingStoreOptions.Password = password
-        app.options.backingStoreOptions.Addr = fmt.Sprintf("%s:%d", host, port)
-        app.options.backingStoreOptions.DB = db
+	app.options.backingStoreOptions.Addr = fmt.Sprintf("%s:%s", host, port)
+	app.options.backingStoreOptions.DB = db
 }
 
 func (app *App) initiateBackingStore() {
 	backingStore, err := pkg.NewClient(app.options.backingStoreOptions)
 	if err != nil {
-		panic("Could not connect to backing store")
+		log.Errorf("Could not connect to redis: %s", err)
 	}
 
 	app.backingStore = backingStore
 }
 
 func (app *App) serve() {
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%d:%d", app.options.listenHost, app.options.listenPort), nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", app.options.listenHost, app.options.listenPort), nil))
 }
 
 func main() {
