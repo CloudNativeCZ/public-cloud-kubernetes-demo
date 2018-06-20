@@ -22,7 +22,7 @@ export class AppComponent {
 
   constructor(private http: HttpClient) {
     this.questions$ = <any>timer(0, 2000).pipe(
-      switchMap(() => http.get(environment.apiURL)),
+      switchMap(() => http.get(environment.apiURL).pipe(map(res => (<any>res).Content))),
     )
     console.log(environment.apiURL)
     console.log(this.questions$)
@@ -30,8 +30,8 @@ export class AppComponent {
 
   submitQuestion() {
     this.http.put(environment.apiURL, {
-      body: this.question
-    })
+      body: this.question.value
+    }).subscribe()
   }
 
   get questions(): Observable<Question> {
