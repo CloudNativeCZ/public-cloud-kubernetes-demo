@@ -21,6 +21,7 @@ spec:
       containers:
         - name: master
           image: pkotas/kubernetes-demo-backend:latest  # or just image: redis
+          imagePullPolicy: IfNotPresent
           resources:
             requests:
               cpu: 100m
@@ -28,8 +29,14 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: REDIS_HOST
-              value: XXX
-            - name: REDIS_PORT
-              value: YYY
-
+            - name: BACKING_STORE_PASSWORD
+              value: "password"
+            - name: BACKING_STORE_HOST
+              value: "redis-master.default"
+            - name: BACKING_STORE_PORT
+              value: "6379"
+            - name: BACKING_STORE_DB
+              value: "0"
+          args:
+            - "listenHost"
+            - "0.0.0.0"
