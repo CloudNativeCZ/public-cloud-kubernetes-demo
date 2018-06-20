@@ -11,5 +11,5 @@ RUN npm run build -- --progress=false
 
 # production image
 FROM nginx:1.13
-COPY --from=node /app/dist/my-app /usr/share/nginx/html
+COPY --from=node /app/dist/ui /usr/share/nginx/html
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
