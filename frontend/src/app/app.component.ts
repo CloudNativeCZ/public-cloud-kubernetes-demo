@@ -24,11 +24,13 @@ export class AppComponent {
     this.questions$ = <any>timer(0, 2000).pipe(
       switchMap(() => http.get(environment.apiURL)),
     )
+    console.log(environment.apiURL)
+    console.log(this.questions$)
   }
 
   submitQuestion() {
-    this.http.post(environment.apiURL, {
-      question: this.question
+    this.http.put(environment.apiURL, {
+      body: this.question
     })
   }
 

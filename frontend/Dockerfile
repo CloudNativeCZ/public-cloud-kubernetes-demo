@@ -7,7 +7,7 @@ COPY package-lock.json /app/
 RUN npm ci --quiet
 
 COPY ./ /app/
-RUN npm run build -- --progress=false
+RUN npm run build -- --progress=false --prod
 
 # production image
 FROM nginx:1.13

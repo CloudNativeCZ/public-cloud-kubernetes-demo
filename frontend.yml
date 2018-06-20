@@ -1,0 +1,31 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+      role: master
+      tier: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+        role: master
+        tier: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: pkotas/kubernetes-demo-frontend:latest  # or just image: redis
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 80
+            - containerPort: 8080
