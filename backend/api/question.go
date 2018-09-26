@@ -76,7 +76,7 @@ func (resource QuestionsResource) add(req *restful.Request, resp *restful.Respon
 	resource.backingStore.RPush("questions", question.Body)
 	resp.WriteHeaderAndEntity(http.StatusCreated, question)
 
-  child.LogEvent(fmt.Sprintf("%v", questionBody))
+  child.LogEvent(fmt.Sprintf("%v", question.Body))
   child.Finish()
   parent.Finish()
 }

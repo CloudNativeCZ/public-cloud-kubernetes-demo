@@ -94,7 +94,7 @@ func main() {
 
   parent := tracer.StartSpan("Boostrap")
 
-  child = tracer.StartSpan("BackingStoreBoostrap", opentracing.ChildOf(parent.Context()))
+  child := tracer.StartSpan("BackingStoreBoostrap", opentracing.ChildOf(parent.Context()))
   app.initiateBackingStore()
   child.LogEvent("Backing store initiated")
   child.Finish()
