@@ -8,7 +8,6 @@ metadata:
     tier: backend
 spec:
   type: LoadBalancer
-  loadBalancerIP: 137.117.242.53
   ports:
   - port: 8080
     targetPort: 8080

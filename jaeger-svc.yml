@@ -7,10 +7,10 @@ metadata:
     role: master
     tier: backend
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - port: 6831
-    targetPort: 6831
+  - port: 16686
+    targetPort: 16686
   selector:
     app: jaeger
     role: master
