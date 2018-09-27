@@ -9,8 +9,12 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 16686
+  - name: ui
+    port: 16686
     targetPort: 16686
+  - name: collector
+    port: 6831
+    targetPort: 6831
   selector:
     app: jaeger
     role: master
