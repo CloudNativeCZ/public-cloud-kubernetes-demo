@@ -1,17 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: jaeger-master
   labels:
-    app: backend
+    app: jaeger
     role: master
     tier: backend
 spec:
   type: LoadBalancer
   ports:
-  - port: 8080
-    targetPort: 8080
+  - name: ui
+    port: 16686
+    targetPort: 16686
+  - name: collector
+    port: 6831
+    targetPort: 6831
   selector:
-    app: backend
+    app: jaeger
     role: master
     tier: backend

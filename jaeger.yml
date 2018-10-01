@@ -1,0 +1,25 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: jaeger
+  labels:
+    app: jaeger
+spec:
+  selector:
+    matchLabels:
+      app: jaeger
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jaeger
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: jaegertracing/all-in-one:latest  # or just image: redis
+        ports:
+        - containerPort: 6831

@@ -33,6 +33,10 @@ spec:
               value: "6379"
             - name: BACKING_STORE_DB
               value: "0"
+            - name: TRACING_CLIENT_HOST
+              value: "jaeger-master.default"
+            - name: TRACING_CLIENT_PORT
+              value: "6831"
           args:
             - "listenHost"
             - "0.0.0.0"
